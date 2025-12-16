@@ -9,73 +9,201 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        /* 颜色变量定义 */
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --header-color: #2c3e50;
+            --article-bg: white;
+            --border-color: #eaeaea;
+            --accent-color: #3498db;
+            --footer-color: #7f8c8d;
+            --shadow-color: rgba(0,0,0,0.1);
+            --toggle-bg: #f0f0f0;
+            --toggle-color: #666;
+        }
+        
+        /* 深色模式颜色变量 */
+        .dark-mode {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --header-color: #ffffff;
+            --article-bg: #161b22;
+            --border-color: #30363d;
+            --accent-color: #58a6ff;
+            --footer-color: #8b949e;
+            --shadow-color: rgba(0,0,0,0.4);
+            --toggle-bg: #21262d;
+            --toggle-color: #c9d1d9;
         }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-color);
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: var(--bg-color);
+            min-height: 100vh;
         }
         
         header {
             text-align: center;
             padding: 40px 0;
-            border-bottom: 1px solid #eaeaea;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 40px;
+            position: relative;
         }
         
         h1 {
-            color: #2c3e50;
+            color: var(--header-color);
             margin-bottom: 10px;
+            font-size: 2.5em;
         }
         
         .tagline {
-            color: #7f8c8d;
+            color: var(--footer-color);
             font-size: 1.2em;
+            font-weight: 300;
         }
         
         article {
-            background: white;
+            background: var(--article-bg);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px var(--shadow-color);
             margin-bottom: 30px;
+            border: 1px solid var(--border-color);
         }
         
         h2 {
-            color: #3498db;
+            color: var(--accent-color);
             margin-bottom: 15px;
+            font-size: 1.8em;
         }
         
         .date {
-            color: #95a5a6;
+            color: var(--footer-color);
             font-size: 0.9em;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .date::before {
+            content: "📅";
         }
         
         footer {
             text-align: center;
             margin-top: 50px;
             padding-top: 20px;
-            border-top: 1px solid #eaeaea;
-            color: #7f8c8d;
+            border-top: 1px solid var(--border-color);
+            color: var(--footer-color);
+            font-size: 0.9em;
         }
         
         a {
-            color: #3498db;
+            color: var(--accent-color);
             text-decoration: none;
+            font-weight: 500;
         }
         
         a:hover {
             text-decoration: underline;
+            opacity: 0.8;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+        
+        /* 深色模式切换按钮 - 更美观 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--toggle-bg);
+            color: var(--toggle-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+        
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+        
+        .theme-toggle:active {
+            transform: translateY(0);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .theme-toggle {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+            
+            article {
+                padding: 20px;
+            }
+        }
+        
+        /* 猫爪元素装饰 */
+        .cat-paw {
+            position: fixed;
+            opacity: 0.1;
+            z-index: -1;
+            font-size: 40px;
+        }
+        
+        .dark-mode .cat-paw {
+            opacity: 0.05;
         }
     </style>
 </head>
 <body>
+    <!-- 装饰性猫爪 -->
+    <div class="cat-paw" style="top: 10%; left: 10%;">🐾</div>
+    <div class="cat-paw" style="bottom: 20%; right: 15%;">🐾</div>
+    
+    <!-- 深色模式切换按钮 -->
+    <button id="themeToggle" class="theme-toggle">
+        <span id="themeIcon">🌙</span>
+        <span id="themeText">深色模式</span>
+    </button>
+    
     <header>
         <h1>萝卜之家</h1>
         <p class="tagline">记录生活，分享傻猫</p>
@@ -87,6 +215,7 @@
             <p class="date">发布日期：2025年12月</p>
             <p>这是我的第一篇博客文章，主要是想做个博客，记录一下生活。</p>
             <p>除了记录生活，各种乱七八糟的东西我都会记录、学习一下，想在这个互联网时代留下一些痕迹。</p>
+            <p style="margin-top: 15px;">👆 点击右上角按钮可以切换深色/浅色模式</p>
         </article>
         
         <article>
@@ -99,13 +228,100 @@
                 <li>项目开发经验</li>
                 <li>读书笔记</li>
                 <li>生活感悟</li>
+                <li>傻猫日常</li>
             </ul>
+            <p style="margin-top: 15px;">💡 提示：你的主题偏好会被自动保存</p>
         </article>
     </main>
     
     <footer>
         <p>© 2025 萝卜之家 | 由 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> 驱动</p>
-        <p>联系方式：563692928@qq.com</p>
+        <p>联系方式：563692928@qq.com | 主题切换已启用</p>
     </footer>
+
+    <script>
+        // 获取DOM元素
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+        
+        // 检查本地存储中的主题设置
+        const savedTheme = localStorage.getItem('theme');
+        
+        // 自动检测系统主题
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // 初始化主题
+        function initTheme() {
+            // 如果用户手动设置过，使用用户的设置
+            if (savedTheme) {
+                if (savedTheme === 'dark') {
+                    enableDarkMode();
+                } else {
+                    enableLightMode();
+                }
+            } 
+            // 否则跟随系统设置
+            else if (systemPrefersDark) {
+                enableDarkMode();
+                localStorage.setItem('theme', 'dark');
+            } else {
+                enableLightMode();
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        
+        // 启用深色模式
+        function enableDarkMode() {
+            body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = '浅色模式';
+        }
+        
+        // 启用浅色模式
+        function enableLightMode() {
+            body.classList.remove('dark-mode');
+            themeIcon.textContent = '🌙';
+            themeText.textContent = '深色模式';
+        }
+        
+        // 切换主题
+        function toggleTheme() {
+            if (body.classList.contains('dark-mode')) {
+                enableLightMode();
+                localStorage.setItem('theme', 'light');
+            } else {
+                enableDarkMode();
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // 监听系统主题变化（如果用户没有手动设置）
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!savedTheme) {
+                if (e.matches) {
+                    enableDarkMode();
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    enableLightMode();
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+        });
+        
+        // 初始化
+        initTheme();
+        
+        // 添加按钮点击事件
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // 添加键盘快捷键支持（按T切换主题）
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 't' || e.key === 'T') {
+                toggleTheme();
+            }
+        });
+    </script>
 </body>
 </html>
