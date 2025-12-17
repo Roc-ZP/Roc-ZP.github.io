@@ -191,6 +191,28 @@
         .dark-mode .cat-paw {
             opacity: 0.05;
         }
+
+        /* 文章卡片链接样式 - 添加在这里 */
+        .article-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .article-link article {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .article-link:hover article {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .article-link:active article {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -210,28 +232,34 @@
     </header>
     
     <main>
-        <article>
-            <h2>欢迎来到萝卜之家！</h2>
-            <p class="date">发布日期：2025年12月</p>
-            <p>这是我的第一篇博客文章，主要是想做个博客，记录一下生活。</p>
-            <p>除了记录生活，各种乱七八糟的东西我都会记录、学习一下，想在这个互联网时代留下一些痕迹。</p>
-            <p style="margin-top: 15px;">👆 点击右上角按钮可以切换深色/浅色模式</p>
-        </article>
-        
-        <article>
-            <h2>关于萝卜之家</h2>
-            <p class="date">发布日期：2025年12月</p>
-            <p>这个博客使用纯HTML/CSS构建（其实就是问ai搞的模板哈哈），部署在GitHub Pages上（免费！顺便学习一下git怎么用）。</p>
-            <p>未来我会在这里分享：</p>
-            <ul>
-                <li>技术学习心得</li>
-                <li>项目开发经验</li>
-                <li>读书笔记</li>
-                <li>生活感悟</li>
-                <li>傻猫日常</li>
-            </ul>
-            <p style="margin-top: 15px;">💡 提示：你的主题偏好会被自动保存</p>
-        </article>
+        <!-- 在这里插入第一个卡片，可以点击跳转 -->
+        <a href="#" class="article-link">
+            <article>
+                <h2>欢迎来到萝卜之家！</h2>
+                <p class="date">发布日期：2025年12月</p>
+                <p>这是我的第一篇博客文章，主要是想做个博客，记录一下生活。</p>
+                <p>除了记录生活，各种乱七八糟的东西我都会记录、学习一下，想在这个互联网时代留下一些痕迹。</p>
+                <p style="margin-top: 15px;">👆 点击右上角按钮可以切换深色/浅色模式</p>
+            </article>
+        </a>
+            
+        <!-- 在这里插入第二个卡片 -->
+        <a href="#" class="article-link">
+            <article>
+                <h2>关于萝卜之家</h2>
+                <p class="date">发布日期：2025年12月</p>
+                <p>这个博客使用纯HTML/CSS构建（其实就是问ai搞的模板哈哈），部署在GitHub Pages上（免费！顺便学习一下git怎么用）。</p>
+                <p>未来我会在这里分享：</p>
+                <ul>
+                    <li>技术学习心得</li>
+                    <li>项目开发经验</li>
+                    <li>读书笔记</li>
+                    <li>生活感悟</li>
+                    <li>傻猫日常</li>
+                </ul>
+                <p style="margin-top: 15px;">💡 提示：你的主题偏好会被自动保存</p>
+            </article>
+        </a>
     </main>
     
     <footer>
@@ -321,6 +349,23 @@
             if (e.key === 't' || e.key === 'T') {
                 toggleTheme();
             }
+        });
+        
+        // 添加卡片点击功能 - 改进版
+        document.querySelectorAll('.article-link').forEach((link, index) => {
+            link.addEventListener('click', function(e) {
+                // 只有当链接是 # 时才阻止默认行为
+                if (this.getAttribute('href') === '#') {
+                    e.preventDefault();
+                    
+                    if (index === 0) {
+                        alert('欢迎来到萝卜之家！\n\n这篇文章介绍了网站的基本情况。\n\n更多内容敬请期待！');
+                    } else {
+                        alert('关于萝卜之家\n\n这里会介绍网站的功能和未来计划。\n\n更多内容敬请期待！');
+                    }
+                }
+                // 如果href是真实页面地址，则允许正常跳转
+            });
         });
     </script>
 </body>
