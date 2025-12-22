@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "npm run build && cd ../ && xcopy /E /I /Y vue-version\\dist\\* .\\"
+    "preview": "vite preview"
   },
   "dependencies": {
     "vue": "^3.3.4"

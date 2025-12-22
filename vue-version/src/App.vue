@@ -205,6 +205,7 @@ article {
   box-shadow: 0 4px 20px var(--shadow-color);
   margin-bottom: 30px;
   border: 1px solid var(--border-color);
+  text-align: left; /* 确保文章内容左对齐 */
 }
 
 h2 {
