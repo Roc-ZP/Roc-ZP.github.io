@@ -5,3 +5,10 @@ npm run dev
 npm run build
 ## 把修改复制至主站
 xcopy /E /I dist\* ..\
+## git命令 
+git status 
+git add .
+git commit -m "feat:update"
+## 查看提交记录(q退出)
+git log
+git push 

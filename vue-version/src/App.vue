@@ -13,29 +13,92 @@
     <header>
       <h1>萝卜之家</h1>
       <p class="tagline">记录生活，分享傻猫</p>
+      <!-- 添加导航菜单 -->
+      <nav class="navigation">
+        <a href="#" @click.prevent="currentView = 'home'" :class="{ active: currentView === 'home' }">首页</a>
+        <a href="#" @click.prevent="currentView = 'bookmarks'" :class="{ active: currentView === 'bookmarks' }">个人收藏网址</a>
+      </nav>
     </header>
     
     <main>
-      <!-- 文章卡片 -->
-      <a 
-        href="#" 
-        class="article-link" 
-        v-for="(article, index) in articles" 
-        :key="index"
-        @click.prevent="showArticleInfo(index)"
-      >
-        <article>
-          <h2>{{ article.title }}</h2>
-          <p class="date">发布日期：{{ article.date }}</p>
-          <div v-for="(paragraph, pIndex) in article.content" :key="pIndex">
-            <p>{{ paragraph }}</p>
+      <!-- 首页内容 -->
+      <div v-if="currentView === 'home'">
+        <!-- 文章卡片 -->
+        <a 
+          href="#" 
+          class="article-link" 
+          v-for="(article, index) in articles" 
+          :key="index"
+          @click.prevent="showArticleInfo(index)"
+        >
+          <article>
+            <h2>{{ article.title }}</h2>
+            <p class="date">发布日期：{{ article.date }}</p>
+            <div v-for="(paragraph, pIndex) in article.content" :key="pIndex">
+              <p>{{ paragraph }}</p>
+            </div>
+            <ul v-if="article.list && article.list.length > 0">
+              <li v-for="(item, i) in article.list" :key="i">{{ item }}</li>
+            </ul>
+            <p v-if="article.note" class="note">{{ article.note }}</p>
+          </article>
+        </a>
+      </div>
+
+      <!-- 收藏网址内容 -->
+      <div v-if="currentView === 'bookmarks'">
+        <section class="bookmarks-section">
+          <h2>个人收藏网址</h2>
+          <p class="section-description">我经常访问的有用网站</p>
+          
+          <div class="bookmark-categories">
+            <!-- 技术类网站 -->
+            <div class="category">
+              <h3>💻 技术学习</h3>
+              <div class="bookmark-grid">
+                <a v-for="bookmark in techBookmarks" :key="bookmark.name" 
+                   :href="bookmark.url" target="_blank" class="bookmark-item">
+                  <div class="bookmark-icon">🔗</div>
+                  <div class="bookmark-content">
+                    <h4>{{ bookmark.name }}</h4>
+                    <p>{{ bookmark.description }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <!-- 工具类网站 -->
+            <div class="category">
+              <h3>🛠️ 实用工具</h3>
+              <div class="bookmark-grid">
+                <a v-for="bookmark in toolBookmarks" :key="bookmark.name" 
+                   :href="bookmark.url" target="_blank" class="bookmark-item">
+                  <div class="bookmark-icon">🔧</div>
+                  <div class="bookmark-content">
+                    <h4>{{ bookmark.name }}</h4>
+                    <p>{{ bookmark.description }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <!-- 娱乐类网站 -->
+            <div class="category">
+              <h3>🎮 娱乐休闲</h3>
+              <div class="bookmark-grid">
+                <a v-for="bookmark in entertainmentBookmarks" :key="bookmark.name" 
+                   :href="bookmark.url" target="_blank" class="bookmark-item">
+                  <div class="bookmark-icon">🎬</div>
+                  <div class="bookmark-content">
+                    <h4>{{ bookmark.name }}</h4>
+                    <p>{{ bookmark.description }}</p>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
-          <ul v-if="article.list && article.list.length > 0">
-            <li v-for="(item, i) in article.list" :key="i">{{ item }}</li>
-          </ul>
-          <p v-if="article.note" class="note">{{ article.note }}</p>
-        </article>
-      </a>
+        </section>
+      </div>
     </main>
     
     <footer>
@@ -51,6 +114,7 @@ export default {
   data() {
     return {
       isDarkMode: false,
+      currentView: 'home', // 控制显示哪个视图
       articles: [
         {
           title: '欢迎来到萝卜之家！',
@@ -77,6 +141,52 @@ export default {
             '傻猫日常'
           ],
           note: '💡 提示：你的主题偏好会被自动保存'
+        }
+      ],
+      techBookmarks: [
+        {
+          name: 'MDN Web Docs',
+          url: 'https://developer.mozilla.org',
+          description: 'Web开发技术文档'
+        },
+        {
+          name: 'Vue.js 官网',
+          url: 'https://vuejs.org',
+          description: 'Vue.js 框架官方文档'
+        },
+        {
+          name: 'GitHub',
+          url: 'https://github.com',
+          description: '代码托管平台'
+        }
+      ],
+      toolBookmarks: [
+        {
+          name: 'Can I Use',
+          url: 'https://caniuse.com',
+          description: '浏览器兼容性查询'
+        },
+        {
+          name: 'Figma',
+          url: 'https://figma.com',
+          description: '在线设计工具'
+        },
+        {
+          name: 'CodePen',
+          url: 'https://codepen.io',
+          description: '在线代码编辑器'
+        }
+      ],
+      entertainmentBookmarks: [
+        {
+          name: 'Bilibili',
+          url: 'https://bilibili.com',
+          description: '大龄儿童乐园'
+        },
+        {
+          name: '知乎',
+          url: 'https://zhihu.com',
+          description: '赛博故事会'
         }
       ]
     }
@@ -327,6 +437,107 @@ li {
   font-style: italic;
 }
 
+/* 导航菜单样式 */
+.navigation {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.navigation a {
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: var(--toggle-bg);
+  color: var(--toggle-color);
+  text-decoration: none;
+  border: 1px solid var(--border-color);
+}
+
+.navigation a:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+.navigation a.active {
+  background: var(--accent-color);
+  color: white;
+}
+
+/* 收藏网址样式 */
+.bookmarks-section {
+  background: var(--article-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.bookmarks-section h2 {
+  color: var(--accent-color);
+  margin-bottom: 10px;
+  font-size: 2em;
+}
+
+.section-description {
+  color: var(--footer-color);
+  margin-bottom: 30px;
+  font-size: 1.1em;
+}
+
+.category {
+  margin-bottom: 40px;
+}
+
+.category h3 {
+  color: var(--accent-color);
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.bookmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  background: var(--bg-color);
+}
+
+.bookmark-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  border-color: var(--accent-color);
+}
+
+.bookmark-icon {
+  font-size: 24px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.bookmark-content h4 {
+  color: var(--accent-color);
+  margin-bottom: 5px;
+}
+
+.bookmark-content p {
+  color: var(--footer-color);
+  font-size: 0.9em;
+  margin: 0;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .container {
@@ -346,5 +557,15 @@ li {
   article {
     padding: 20px;
   }
+
+  .bookmark-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+
 }
 </style>
