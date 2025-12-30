@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [vue()],
   base: '/',  // 必须是根路径
   build: {
-  outDir: 'dist'
+   outDir: 'dist'
   }
 })

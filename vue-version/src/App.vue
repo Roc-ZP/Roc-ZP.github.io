@@ -22,82 +22,91 @@
     
     <main>
       <!-- 首页内容 -->
-      <div v-if="currentView === 'home'">
+      <div v-if="currentView === 'home'" class="home-content">
+        <div class="welcome-section">
+          <h2>欢迎回来！</h2>
+          <p class="welcome-text">今天是 {{ currentDate }}</p>
+        </div>
+        
         <!-- 文章卡片 -->
-        <a 
-          href="#" 
-          class="article-link" 
-          v-for="(article, index) in articles" 
-          :key="index"
-          @click.prevent="showArticleInfo(index)"
-        >
-          <article>
-            <h2>{{ article.title }}</h2>
-            <p class="date">发布日期：{{ article.date }}</p>
-            <div v-for="(paragraph, pIndex) in article.content" :key="pIndex">
-              <p>{{ paragraph }}</p>
+        <div class="articles-grid">
+          <div 
+            class="article-card"
+            v-for="(article, index) in articles" 
+            :key="index"
+            @click="showArticleInfo(index)"
+          >
+            <div class="article-header">
+              <h3>{{ article.title }}</h3>
+              <span class="article-date">📅 {{ article.date }}</span>
             </div>
-            <ul v-if="article.list && article.list.length > 0">
-              <li v-for="(item, i) in article.list" :key="i">{{ item }}</li>
-            </ul>
-            <p v-if="article.note" class="note">{{ article.note }}</p>
-          </article>
-        </a>
+            <div class="article-content">
+              <div v-for="(paragraph, pIndex) in article.content" :key="pIndex">
+                <p>{{ paragraph }}</p>
+              </div>
+              <ul v-if="article.list && article.list.length > 0">
+                <li v-for="(item, i) in article.list" :key="i">{{ item }}</li>
+              </ul>
+              <p v-if="article.note" class="note">{{ article.note }}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 收藏网址内容 -->
-      <div v-if="currentView === 'bookmarks'">
-        <section class="bookmarks-section">
-          <h2>个人收藏网址</h2>
+      <div v-if="currentView === 'bookmarks'" class="bookmarks-content">
+        <div class="bookmarks-header">
+          <h2>🐱 个人收藏网址</h2>
           <p class="section-description">我经常访问的有用网站</p>
-          
-          <div class="bookmark-categories">
-            <!-- 技术类网站 -->
-            <div class="category">
-              <h3>💻 技术学习</h3>
-              <div class="bookmark-grid">
-                <a v-for="bookmark in techBookmarks" :key="bookmark.name" 
-                   :href="bookmark.url" target="_blank" class="bookmark-item">
-                  <div class="bookmark-icon">🔗</div>
-                  <div class="bookmark-content">
-                    <h4>{{ bookmark.name }}</h4>
-                    <p>{{ bookmark.description }}</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-            
-            <!-- 工具类网站 -->
-            <div class="category">
-              <h3>🛠️ 实用工具</h3>
-              <div class="bookmark-grid">
-                <a v-for="bookmark in toolBookmarks" :key="bookmark.name" 
-                   :href="bookmark.url" target="_blank" class="bookmark-item">
-                  <div class="bookmark-icon">🔧</div>
-                  <div class="bookmark-content">
-                    <h4>{{ bookmark.name }}</h4>
-                    <p>{{ bookmark.description }}</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-            
-            <!-- 娱乐类网站 -->
-            <div class="category">
-              <h3>🎮 娱乐休闲</h3>
-              <div class="bookmark-grid">
-                <a v-for="bookmark in entertainmentBookmarks" :key="bookmark.name" 
-                   :href="bookmark.url" target="_blank" class="bookmark-item">
-                  <div class="bookmark-icon">🎬</div>
-                  <div class="bookmark-content">
-                    <h4>{{ bookmark.name }}</h4>
-                    <p>{{ bookmark.description }}</p>
-                  </div>
-                </a>
-              </div>
+        </div>
+        
+        <!-- 收藏网址网格布局 -->
+        <div class="bookmarks-grid">
+          <!-- 技术类网站 -->
+          <div class="bookmark-category-card">
+            <h3 class="category-title">💻 技术学习</h3>
+            <div class="category-bookmarks">
+              <a v-for="bookmark in techBookmarks" :key="bookmark.name" 
+                 :href="bookmark.url" target="_blank" class="bookmark-item">
+                <div class="bookmark-icon">🔗</div>
+                <div class="bookmark-content">
+                  <h4>{{ bookmark.name }}</h4>
+                  <p>{{ bookmark.description }}</p>
+                </div>
+              </a>
             </div>
           </div>
-        </section>
+          
+          <!-- 工具类网站 -->
+          <div class="bookmark-category-card">
+            <h3 class="category-title">🛠️ 实用工具</h3>
+            <div class="category-bookmarks">
+              <a v-for="bookmark in toolBookmarks" :key="bookmark.name" 
+                 :href="bookmark.url" target="_blank" class="bookmark-item">
+                <div class="bookmark-icon">🔧</div>
+                <div class="bookmark-content">
+                  <h4>{{ bookmark.name }}</h4>
+                  <p>{{ bookmark.description }}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+          
+          <!-- 娱乐类网站 -->
+          <div class="bookmark-category-card">
+            <h3 class="category-title">🎮 娱乐休闲</h3>
+            <div class="category-bookmarks">
+              <a v-for="bookmark in entertainmentBookmarks" :key="bookmark.name" 
+                 :href="bookmark.url" target="_blank" class="bookmark-item">
+                <div class="bookmark-icon">🎬</div>
+                <div class="bookmark-content">
+                  <h4>{{ bookmark.name }}</h4>
+                  <p>{{ bookmark.description }}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
     
@@ -114,7 +123,13 @@ export default {
   data() {
     return {
       isDarkMode: false,
-      currentView: 'home', // 控制显示哪个视图
+      currentView: 'home',
+      currentDate: new Date().toLocaleDateString('zh-CN', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        weekday: 'long'
+      }),
       articles: [
         {
           title: '欢迎来到萝卜之家！',
@@ -192,14 +207,10 @@ export default {
     }
   },
   mounted() {
-    // 初始化主题
     this.initTheme();
-    
-    // 添加键盘快捷键支持
     document.addEventListener('keydown', this.handleKeyDown);
   },
   beforeUnmount() {
-    // 清理事件监听器
     document.removeEventListener('keydown', this.handleKeyDown);
   },
   methods: {
@@ -251,13 +262,14 @@ export default {
   --bg-color: #f8f9fa;
   --text-color: #333;
   --header-color: #2c3e50;
-  --article-bg: white;
+  --card-bg: white;
   --border-color: #eaeaea;
   --accent-color: #3498db;
   --footer-color: #7f8c8d;
   --shadow-color: rgba(0,0,0,0.1);
   --toggle-bg: #f0f0f0;
   --toggle-color: #666;
+  --grid-bg: #f1f3f4;
 }
 
 /* 深色模式颜色变量 */
@@ -265,13 +277,14 @@ export default {
   --bg-color: #0d1117;
   --text-color: #c9d1d9;
   --header-color: #ffffff;
-  --article-bg: #161b22;
+  --card-bg: #161b22;
   --border-color: #30363d;
   --accent-color: #58a6ff;
   --footer-color: #8b949e;
   --shadow-color: rgba(0,0,0,0.4);
   --toggle-bg: #21262d;
   --toggle-color: #c9d1d9;
+  --grid-bg: #0d1117;
 }
 
 body {
@@ -280,19 +293,25 @@ body {
   color: var(--text-color);
   background-color: var(--bg-color);
   min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(52, 152, 219, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(52, 152, 219, 0.05) 0%, transparent 20%);
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 头部样式 */
 header {
   text-align: center;
-  padding: 40px 0;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 40px;
+  padding: 40px 0 20px;
+  margin-bottom: 30px;
   position: relative;
 }
 
@@ -300,141 +319,14 @@ header h1 {
   color: var(--header-color);
   margin-bottom: 10px;
   font-size: 2.5em;
+  font-weight: 600;
 }
 
 .tagline {
   color: var(--footer-color);
   font-size: 1.2em;
   font-weight: 300;
-}
-
-article {
-  background: var(--article-bg);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px var(--shadow-color);
-  margin-bottom: 30px;
-  border: 1px solid var(--border-color);
-  text-align: left; /* 确保文章内容左对齐 */
-}
-
-h2 {
-  color: var(--accent-color);
-  margin-bottom: 15px;
-  font-size: 1.8em;
-}
-
-.date {
-  color: var(--footer-color);
-  font-size: 0.9em;
   margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.date::before {
-  content: "📅";
-}
-
-footer {
-  text-align: center;
-  margin-top: 50px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-  color: var(--footer-color);
-  font-size: 0.9em;
-}
-
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-a:hover {
-  text-decoration: underline;
-  opacity: 0.8;
-}
-
-ul {
-  margin-left: 20px;
-  margin-top: 15px;
-  margin-bottom: 10px;
-}
-
-li {
-  margin-bottom: 8px;
-  padding-left: 10px;
-}
-
-/* 深色模式切换按钮 - 更美观 */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--toggle-bg);
-  color: var(--toggle-color);
-  border: 1px solid var(--border-color);
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 1000;
-  box-shadow: 0 2px 8px var(--shadow-color);
-}
-
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.theme-toggle:active {
-  transform: translateY(0);
-}
-
-/* 文章卡片链接样式 */
-.article-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  margin-bottom: 30px;
-}
-
-.article-link article {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-
-.article-link:hover article {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px var(--shadow-color);
-}
-
-.article-link:active article {
-  transform: translateY(-2px);
-}
-
-/* 猫爪元素装饰 */
-.cat-paw {
-  position: fixed;
-  opacity: 0.1;
-  z-index: -1;
-  font-size: 40px;
-}
-
-.dark-mode .cat-paw {
-  opacity: 0.05;
-}
-
-.note {
-  margin-top: 15px;
-  color: var(--accent-color);
-  font-style: italic;
 }
 
 /* 导航菜单样式 */
@@ -446,34 +338,155 @@ li {
 }
 
 .navigation a {
-  padding: 8px 16px;
-  border-radius: 6px;
-  background: var(--toggle-bg);
-  color: var(--toggle-color);
+  padding: 10px 20px;
+  border-radius: 25px;
+  background: var(--grid-bg);
+  color: var(--text-color);
   text-decoration: none;
+  font-weight: 500;
   border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .navigation a:hover {
   background: var(--accent-color);
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .navigation a.active {
   background: var(--accent-color);
   color: white;
+  border-color: var(--accent-color);
 }
 
-/* 收藏网址样式 */
-.bookmarks-section {
-  background: var(--article-bg);
-  padding: 30px;
+/* 主要内容区域 */
+main {
+  flex: 1;
+  margin-bottom: 30px;
+}
+
+/* 首页内容样式 */
+.home-content {
+  padding: 0 20px;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: var(--grid-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 20px var(--shadow-color);
   border: 1px solid var(--border-color);
 }
 
-.bookmarks-section h2 {
+.welcome-section h2 {
+  color: var(--accent-color);
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.welcome-text {
+  color: var(--footer-color);
+  font-size: 1.1em;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.article-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-color);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover::before {
+  transform: scaleX(1);
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.article-header {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.article-header h3 {
+  color: var(--accent-color);
+  margin-bottom: 5px;
+  font-size: 1.4em;
+}
+
+.article-date {
+  color: var(--footer-color);
+  font-size: 0.9em;
+}
+
+.article-content p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.article-content ul {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.article-content li {
+  margin-bottom: 8px;
+  padding-left: 5px;
+}
+
+.note {
+  margin-top: 15px;
+  color: var(--accent-color);
+  font-style: italic;
+  padding: 10px;
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-color);
+}
+
+/* 收藏网址内容样式 */
+.bookmarks-content {
+  padding: 0 20px;
+}
+
+.bookmarks-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.bookmarks-header h2 {
   color: var(--accent-color);
   margin-bottom: 10px;
   font-size: 2em;
@@ -485,21 +498,61 @@ li {
   font-size: 1.1em;
 }
 
-.category {
-  margin-bottom: 40px;
+/* 收藏网址网格布局 - 已修改为3列横向布局 */
+.bookmarks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 改为固定3列，实现横向布局 */
+  gap: 25px;
+  margin-top: 20px;
 }
 
-.category h3 {
+.bookmark-category-card {
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  height: 100%; /* 使所有卡片高度一致 */
+}
+
+.bookmark-category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-color);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.bookmark-category-card:hover::before {
+  transform: scaleX(1);
+}
+
+.bookmark-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.category-title {
   color: var(--accent-color);
   margin-bottom: 20px;
-  font-size: 1.5em;
-  border-bottom: 2px solid var(--border-color);
+  font-size: 1.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.bookmark-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+.category-bookmarks {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
 }
 
@@ -512,13 +565,14 @@ li {
   text-decoration: none;
   color: var(--text-color);
   transition: all 0.3s ease;
-  background: var(--bg-color);
+  background: var(--card-bg);
 }
 
 .bookmark-item:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--shadow-color);
   border-color: var(--accent-color);
+  background: var(--grid-bg);
 }
 
 .bookmark-icon {
@@ -530,15 +584,96 @@ li {
 .bookmark-content h4 {
   color: var(--accent-color);
   margin-bottom: 5px;
+  font-size: 1.1em;
 }
 
 .bookmark-content p {
   color: var(--footer-color);
   font-size: 0.9em;
   margin: 0;
+  line-height: 1.4;
+}
+
+/* 深色模式切换按钮 - 更美观 */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--toggle-bg);
+  color: var(--toggle-color);
+  border: 1px solid var(--border-color);
+  padding: 10px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+/* 猫爪元素装饰 */
+.cat-paw {
+  position: fixed;
+  opacity: 0.05;
+  z-index: -1;
+  font-size: 60px;
+  pointer-events: none;
+  animation: float 6s ease-in-out infinite;
+}
+
+.cat-paw:nth-child(2n) {
+  animation-delay: -2s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.dark-mode .cat-paw {
+  opacity: 0.02;
+}
+
+/* 页脚样式 */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  color: var(--footer-color);
+  font-size: 0.9em;
+  padding-bottom: 20px;
+}
+
+footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 /* 响应式设计 */
+@media (max-width: 1024px) {
+  .bookmarks-grid {
+    grid-template-columns: repeat(2, 1fr); /* 在平板设备上显示2列 */
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 15px;
@@ -554,18 +689,25 @@ li {
     right: 15px;
   }
   
-  article {
-    padding: 20px;
-  }
-
-  .bookmark-grid {
-    grid-template-columns: 1fr;
+  .articles-grid,
+  .bookmarks-grid {
+    grid-template-columns: 1fr; /* 手机端改为单列 */
+    gap: 20px;
   }
   
   .navigation {
     flex-direction: column;
     align-items: center;
+    gap: 10px;
   }
-
+  
+  .welcome-section {
+    padding: 15px;
+  }
+  
+  .article-card,
+  .bookmark-category-card {
+    padding: 20px;
+  }
 }
 </style>
